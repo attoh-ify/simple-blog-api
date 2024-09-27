@@ -91,7 +91,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        res.clearCookie("userToken").status(200).json({ message: "Logout successful"})
+        res.clearCookie("userToken").status(200).json({ message: "Logout successful" })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to logout user" });
@@ -101,7 +101,12 @@ export const logout = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     try {
-
+        const userProfile = await User.findOne({
+            where: {
+                id: req.userID
+            }
+        });
+        return res.status(200).json({ userProfileDetails: userProfile });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to register get users profile" });
@@ -111,9 +116,20 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
+        const [updatedProfile] = await User.update(req.body, {
+            where: {
+                id: req.userID
+            }
+        });
+        const newUserProfile = await User.findOne({
+            where: {
+                id: req.userID
+            }
+        });
 
+        return res.status(200).json({ userProfileDetails: newUserProfile });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Failed to register update users profile" });
+        return res.status(500).json({ message: "Failed to update user profile" });
     }
 };
