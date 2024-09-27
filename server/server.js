@@ -6,6 +6,7 @@ import authRoute from './routes/auth.route.js';
 import categoriesRoute from './routes/categories.route.js';
 import commentsRoute from './routes/comments.route.js';
 import postsRoute from './routes/posts.route.js';
+import sequelize from './db.js';
 
 const PORT = 5000 || process.env.PORT;
 
@@ -24,6 +25,8 @@ server.use('/', commentsRoute);
 server.use('/posts', postsRoute);
 
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}...`);
+sequelize.sync({ force: false }).then(() => {
+    server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}...`);
+    });
 });
