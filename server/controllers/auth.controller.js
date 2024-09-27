@@ -31,10 +31,7 @@ export const register = async (req, res) => {
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const id = crypto.randomBytes(6).toString('hex').slice(0, 12);
-
         const newUser = await User.create({
-            id: id,
             username: username,
             email: email,
             password: hashedPassword
@@ -131,5 +128,26 @@ export const updateProfile = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to update user profile" });
+    }
+};
+
+
+export const deleteUser = async (req, res) => {
+    try {
+        const deletedUser = await User.destroy({
+            where: {
+                id: req.userID
+            }
+        });
+
+    // Check if the user existed and was deleted
+    if (deletedUser) {
+        return res.status(200).json({ message: 'User deleted successfully' });
+      } else {
+        return res.status(404).json({ message: 'User not found' });
+      }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete user" });
     }
 };
