@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import sequelize from '../db.js';
-import crypto from 'crypto';
 import User from '../models/User.js'
 
 
@@ -140,12 +138,12 @@ export const deleteUser = async (req, res) => {
             }
         });
 
-    // Check if the user existed and was deleted
-    if (deletedUser) {
-        return res.status(200).json({ message: 'User deleted successfully' });
-      } else {
-        return res.status(404).json({ message: 'User not found' });
-      }
+        // Check if the user exists and was deleted
+        if (deletedUser) {
+            return res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to delete user" });

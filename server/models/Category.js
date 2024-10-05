@@ -1,35 +1,31 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db.js';
 
-const User = sequelize.define('User', {
+const Category = sequelize.define('Category', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
         unique: true,
-    },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    email: {
+      },
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-    },
-    password: {
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      slug: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
-}, {
-    tableName: 'users',
-    timestamps: true,
+        unique: true,
+      },
+    }, {
+      tableName: 'categories',
+      timestamps: true,
 });
 
-export default User;
+export default Category;
