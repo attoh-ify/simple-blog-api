@@ -129,6 +129,16 @@ export const editPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     try {
+        const post = await Post.findOne({
+            where: {
+                slug: req.params.slug
+            }
+        });
+
+        if (req.userID !== post.userID) {
+            return res.status(401).json({ message: "This post belongs to another user" });
+        };
+
         const deletedPost = await Post.destroy({
             where: {
                 slug: req.params.slug
